@@ -14,6 +14,7 @@ class TelegramConfig:
     api_hash: str
     phone: str
     login: str
+    password: str | None = None
 
 
 @dataclass
@@ -38,14 +39,13 @@ class Config:
 def setup_config(app: "Application", config_path: str):
     load_dotenv(dotenv_path=config_path, override=True)
 
-    tg_config = None
-    if all(env_var in os.environ for env_var in ["TG_API_ID", "TG_API_HASH", "TG_PHONE", "TG_LOGIN"]):
-        tg_config = TelegramConfig(
-            api_id=int(os.environ["TG_API_ID"]),
-            api_hash=os.environ["TG_API_HASH"],
-            phone=os.environ["TG_PHONE"],
-            login=os.environ["TG_LOGIN"]
-        )
+    tg_config = TelegramConfig(
+        api_id=int(os.environ["TG_API_ID"]),
+        api_hash=os.environ["TG_API_HASH"],
+        phone=os.environ["TG_PHONE"],
+        login=os.environ["TG_LOGIN"],
+        password=os.environ["TG_PASS"]
+    )
 
     db_config = DataBaseConfig(
         user=os.environ["DB_USER"],
