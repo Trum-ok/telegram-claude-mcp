@@ -5,9 +5,163 @@ description = "..."
 readme = "README.md"
 requires-python = ">=3.12.5"
 dependencies = [
+    "alembic>=1.15.2",
     "asyncpg>=0.30.0",
+    "fastapi>=0.115.12",
     "mcp[cli]>=1.6.0",
     "pyrogram>=2.0.106",
     "python-dotenv>=1.1.0",
     "requests>=2.32.3",
+    "ruff>=0.11.2",
+    "sqlalchemy>=2.0.40",
+    "tgcrypto>=1.2.5",
+    "uvicorn[async,standard]>=0.34.0",
+]
+
+[tool.ruff]
+line-length = 80
+indent-width = 4
+target-version = "py312"
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".gitlab",
+    ".git-rewrite",
+    ".hg",
+    ".kube",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "docker",
+    "env",
+    "etc",
+    "migrations",
+    "requirements",
+    "venv"
+]
+extend-select = [
+    "A001",
+    "B",
+    "C4",
+    "C901",
+    "COM818",
+    "COM819",
+    "D",
+    "E",
+    "FBT003",
+    "G",
+    "I",
+    "ISC003",
+    "N",
+    "PGH",
+    "PIE",
+    "PYI",
+    "PL",
+    "PT",
+    "PLR",
+    "RET",
+    "RUF",
+    "SIM",
+    "T20",
+    "B904",
+    "TRY300",
+    "TRY401",
+    "UP",
+    "W",
+]
+extend-ignore = [
+    "B009",     #  get-attr-with-constant                       (https://docs.astral.sh/ruff/rules/get-attr-with-constant)
+    "B010",     #  set-attr-with-constant                       (https://docs.astral.sh/ruff/rules/set-attr-with-constant)
+    "B012",     #  jump-statement-in-finally                    (https://docs.astral.sh/ruff/rules/jump-statement-in-finally)
+    "D1",       #  undocumented-public-smth                     (https://docs.astral.sh/ruff/rules/#pydocstyle-d)
+    "D205",     #  blank-line-after-summary                     (https://docs.astral.sh/ruff/rules/blank-line-after-summary)
+    "D415",     #  ends-in-punctuation                          (https://docs.astral.sh/ruff/rules/ends-in-punctuation/)
+    "E2",       #  [reason: unstable]                           (https://docs.astral.sh/ruff/rules/#error-e)
+    "F405",     #  undefined-local-with-import-star-usage       (https://docs.astral.sh/ruff/rules/undefined-local-with-import-star-usage)
+    "PLC0415",  #  import-outside-top-level                     (https://docs.astral.sh/ruff/rules/import-outside-top-level)
+    "PLC2801",  #  unnecessary-dunder-call                      (https://docs.astral.sh/ruff/rules/unnecessary-dunder-call)
+    "PLR2004",  #  magic-value-comparison                       (https://docs.astral.sh/ruff/rules/magic-value-comparison)
+    "PLR0904",  #  too-many-public-methods                      (https://docs.astral.sh/ruff/rules/too-many-public-methods)
+    "PLR0916",  #  too-many-boolean-expressions                 (https://docs.astral.sh/ruff/rules/too-many-boolean-expressions)
+    "PLR0917",  #  too-many-positional                          (https://docs.astral.sh/ruff/rules/too-many-positional)
+    "PLR6201",  #  literal-membership                           (https://docs.astral.sh/ruff/rules/literal-membership)
+    "PLR6301",  #  no-self-use                                  (https://docs.astral.sh/ruff/rules/no-self-use)
+    "PLW1514",  #  unspecified-encoding                         (https://docs.astral.sh/ruff/rules/unspecified-encoding)
+    "PLW1641",  #  eq-without-hash                              (https://docs.astral.sh/ruff/rules/eq-without-hash)
+    "PLC2701",  #  import-private-name                          (https://docs.astral.sh/ruff/rules/import-private-name)
+    "PLR0913",  #  too-many-arguments                           (https://docs.astral.sh/ruff/rules/too-many-arguments)
+    "PLR1714",  #  repeated-equality-comparison                 (https://docs.astral.sh/ruff/rules/repeated-equality-comparison)
+    "RUF001",   #  ambiguous-unicode-character-string           (https://docs.astral.sh/ruff/rules/ambiguous-unicode-character-string)
+    "RUF002",   #  ambiguous-unicode-character-docstring        (https://docs.astral.sh/ruff/rules/ambiguous-unicode-character-docstring)
+    "RUF003",   #  ambiguous-unicode-character-comment          (https://docs.astral.sh/ruff/rules/ambiguous-unicode-character-comment)
+    "RUF009",   #  function-call-in-dataclass-default-argument  (https://docs.astral.sh/ruff/rules/function-call-in-dataclass-default-argument)
+    "RUF012",   #  mutable-class-default                        (https://docs.astral.sh/ruff/rules/mutable-class-default)
+    "RUF021",   #  parenthesize-chained-operators               (https://docs.astral.sh/ruff/rules/parenthesize-chained-operators)
+    "SIM105",   #  suppressible-exception                       (https://docs.astral.sh/ruff/rules/suppressible-exception)
+    "SIM108",   #  if-else-block-instead-of-if-exp              (https://docs.astral.sh/ruff/rules/if-else-block-instead-of-if-exp)
+    "SIM117",   #  multiple-with-statements                     (https://docs.astral.sh/ruff/rules/multiple-with-statements)
+    "UP012",    #  unnecessary-encode-utf8                      (https://docs.astral.sh/ruff/rules/unnecessary-encode-utf8)
+    "UP015",    #  redundant-open-modes                         (https://docs.astral.sh/ruff/rules/redundant-open-modes)
+    "UP032",    #  f-string                                     (https://docs.astral.sh/ruff/rules/f-string)
+
+
+    "D203",
+    "D212",
+    # При использовании Ruff в качестве форматтера, рекомендуется избегать следующих правил:
+    # (https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules)
+    "COM812",
+    "COM819",
+    "E111",
+    "E114",
+    "E117",
+    "E501",
+    "D206",
+    "D300",
+    "ISC001",
+    "ISC002",
+    "Q000",
+    "Q001",
+    "Q002",
+    "Q003",
+    "W191",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint]
+fixable = ["I", "RUF022", "RUF023", "UP007", "F401"]
+preview = true
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[tool.ruff.lint.flake8-type-checking]
+exempt-modules = ["typing"]
+quote-annotations = true
+
+[tool.ruff.lint.flake8-unused-arguments]
+ignore-variadic-names = true
+
+[tool.ruff.lint.extend-per-file-ignores]
+"__init__.py" = ["F403"]
+"tests/*.py" = [
+   "SIM300", # yoda-conditions                   (https://docs.astral.sh/ruff/rules/yoda-conditions/)
+    "F403",  # undefined-local-with-import-star  (https://docs.astral.sh/ruff/rules/undefined-local-with-import-star)
 ]
